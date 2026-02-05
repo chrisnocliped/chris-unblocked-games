@@ -2,27 +2,114 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Games - Tab</title>My games
+    <title>Chris's Cookie Clicker</title>
     <style>
-        body { font-family: sans-serif; background: #121212; color: white; text-align: center; }
-        nav { background: #1f1f1f; padding: 15px; }
-        nav a { color: #00adb5; margin: 0 15px; text-decoration: none; font-weight: bold; }
-        .content { padding: 50px; }
-        .btn-home { display: inline-block; padding: 10px; color: #00adb5; text-decoration: none; border: 1px solid #00adb5; border-radius: 5px; margin-bottom: 20px; }
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #00adb5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #cookie {
+            width: 200px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            user-select: none;
+        }
+
+        #cookie:active {
+            transform: scale(0.9);
+        }
+
+        .stats {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .upgrade-btn {
+            background-color: #00adb5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .upgrade-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="games.html" style="color: white;">Games</a> <a href="movies.html">Movies</a>
-</nav>
+    <a href="index.html" class="back-btn">← Back to Home</a>
 
-<div class="content">
-    <a href="index.html" class="btn-home">← Back to Main Hub</a>
-    <h1>My Game Collection</h1>
-    <p>This is where your games will live!</p>
+    <h1>Cookie Clicker</h1>
+    
+    <div class="stats">
+        Cookies: <span id="cookie-count">0</span>
     </div>
 
+    <div id="cookie" style="background: #8B4513; height: 200px; border-radius: 50%; border: 8px dashed #5D2E0C; display: flex; align-items: center; justify-content: center; font-size: 40px;">
+        🍪
+    </div>
+
+    <button id="upgrade-btn" class="upgrade-btn">Buy Upgrade (Cost: 10)</button>
+    <p id="multiplier-text">Cookies per click: 1</p>
+
+    <script>
+        let cookies = 0;
+        let multiplier = 1;
+        let upgradeCost = 10;
+
+        const cookieElement = document.getElementById('cookie');
+        const countDisplay = document.getElementById('cookie-count');
+        const upgradeBtn = document.getElementById('upgrade-btn');
+        const multiplierText = document.getElementById('multiplier-text');
+
+        // Clicking the cookie
+        cookieElement.addEventListener('click', () => {
+            cookies += multiplier;
+            updateDisplay();
+        });
+
+        // Buying an upgrade
+        upgradeBtn.addEventListener('click', () => {
+            if (cookies >= upgradeCost) {
+                cookies -= upgradeCost;
+                multiplier += 1;
+                upgradeCost = Math.round(upgradeCost * 1.5);
+                updateDisplay();
+            }
+        });
+
+        function updateDisplay() {
+            countDisplay.innerText = cookies;
+            multiplierText.innerText = "Cookies per click: " + multiplier;
+            upgradeBtn.innerText = "Buy Upgrade (Cost: " + upgradeCost + ")";
+            
+            // Disable button if you can't afford it
+            upgradeBtn.disabled = cookies < upgradeCost;
+        }
+    </script>
 </body>
 </html>
